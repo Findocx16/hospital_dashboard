@@ -22,6 +22,9 @@ function App() {
         ? { width: "27vw", height: "25vh", marginBottom: "10px" }
         : { width: "27vw", height: "30vh", marginBottom: "10px" };
     const handleFinish = () => {
+        if (nowServing === waiting) {
+            setWaiting(waiting + 1);
+        }
         setNowServing(waiting);
         setLastCalled5(nowServing);
         setLastCalled6(lastCalled5);
