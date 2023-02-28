@@ -15,16 +15,17 @@ function App() {
     const [lastCalled7, setLastCalled7] = useState(0);
 
     const styles = showButtons
-        ? { width: "40vw", height: "85vh" }
-        : { width: "40vw", height: "90vh" };
+        ? { width: "50vw", height: "80vh" }
+        : { width: "50vw", height: "89vh" };
 
     const styles2 = showButtons
-        ? { width: "27vw", height: "25vh", marginBottom: "10px" }
-        : { width: "27vw", height: "30vh", marginBottom: "10px" };
+        ? { width: "33.5vw", height: "22vh", marginBottom: "10px" }
+        : { width: "33.5vw", height: "31vh", marginBottom: "10px" };
     const handleFinish = () => {
         if (nowServing === waiting) {
             setWaiting(waiting + 1);
         }
+
         setNowServing(waiting);
         setLastCalled5(nowServing);
         setLastCalled6(lastCalled5);
@@ -67,6 +68,13 @@ function App() {
         setLastCalled2(lastCalled2 + 1);
         setLastCalled3(lastCalled3 + 1);
         setLastCalled4(lastCalled4 + 1);
+    };
+    const handlePrev = () => {
+        setWaiting(waiting - 1);
+        setLastCalled1(lastCalled1 - 1);
+        setLastCalled2(lastCalled2 - 1);
+        setLastCalled3(lastCalled3 - 1);
+        setLastCalled4(lastCalled4 - 1);
     };
 
     const handleCallAgain = () => {
@@ -121,7 +129,7 @@ function App() {
                     <Col>
                         <Card className='bg-secondary' style={{ ...styles }}>
                             <Card.Body
-                                style={{ marginTop: "14rem" }}
+                                style={{ marginTop: "10rem" }}
                                 className='text-center'
                             >
                                 <Card.Title
@@ -144,7 +152,7 @@ function App() {
                             <Card
                                 className='bg-secondary'
                                 style={{
-                                    width: "27vw",
+                                    width: "33.5vw",
                                     height: "25vh",
                                     marginBottom: "10px",
                                 }}
@@ -160,7 +168,7 @@ function App() {
                                         Next
                                     </Card.Title>
                                     <Card.Text
-                                        style={{ color: "#f58d42", fontSize: "5rem" }}
+                                        style={{ color: "#f58d42", fontSize: "3rem" }}
                                     >
                                         {"00" + waiting}
                                     </Card.Text>
@@ -178,7 +186,7 @@ function App() {
                                 >
                                     <Card.Title
                                         className='text-light'
-                                        style={{ fontSize: "3.5rem" }}
+                                        style={{ fontSize: "2rem" }}
                                     >
                                         Last called
                                     </Card.Title>
@@ -195,7 +203,7 @@ function App() {
                             </Card>
                             <Card
                                 className='bg-secondary'
-                                style={{ width: "27vw", height: "33vh" }}
+                                style={{ width: "33.5vw", height: "30.5vh" }}
                             >
                                 <Card.Body
                                     style={{ marginTop: "1rem" }}
@@ -203,7 +211,7 @@ function App() {
                                 >
                                     <Card.Title
                                         className='text-light'
-                                        style={{ fontSize: "3.5rem" }}
+                                        style={{ fontSize: "2rem" }}
                                     >
                                         Waiting
                                     </Card.Title>
@@ -214,8 +222,6 @@ function App() {
                                         {"00" + lastCalled2}
                                         <br />
                                         {"00" + lastCalled3}
-                                        <br />
-                                        {"00" + lastCalled4}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -231,7 +237,7 @@ function App() {
                             disabled={nowServing === waiting ? true : false}
                             variant='success'
                             size='lg'
-                            style={{ flex: 1.57, marginRight: "10px" }}
+                            style={{ flex: 2.6, marginRight: "10px" }}
                             onClick={handleFinish}
                         >
                             Finish
@@ -240,10 +246,24 @@ function App() {
                             disabled={nowServing === waiting ? true : false}
                             variant='secondary'
                             size='lg'
-                            style={{ flex: 1.57, marginRight: "10px" }}
+                            style={{ flex: 2.65, marginRight: "10px" }}
                             onClick={handleCancel}
                         >
                             Cancel
+                        </Button>
+
+                        <Button
+                            disabled={
+                                waiting - 1 === nowServing || nowServing === waiting
+                                    ? true
+                                    : false
+                            }
+                            variant='danger'
+                            size='lg'
+                            style={{ flex: 1, marginRight: "10px" }}
+                            onClick={handlePrev}
+                        >
+                            Previous
                         </Button>
                         <Button
                             variant='primary'
