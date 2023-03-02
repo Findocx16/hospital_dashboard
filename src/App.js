@@ -140,7 +140,7 @@ function App() {
     const handleCallAgain = () => {
         setTimeStorage1();
 
-        const message = `Last call for patient ${waiting}`;
+        const message = `Last call for patient number ${waiting}`;
         const speech = new SpeechSynthesisUtterance(message);
         speech.lang = "en-US";
 
