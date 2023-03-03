@@ -250,7 +250,11 @@ function App() {
                                 </Card.Title>
 
                                 <Card.Text
-                                    style={{ color: "#f58d42", fontSize: "20rem" }}
+                                    style={{
+                                        color: "#f58d42",
+                                        fontSize: "20rem",
+                                        marginTop: "-5rem",
+                                    }}
                                 >
                                     <strong>
                                         {nowServing === 1 ||
@@ -344,9 +348,11 @@ function App() {
                             ) : (
                                 <div
                                     style={
-                                        numRows > 5
+                                        numRows > 7
                                             ? {
-                                                  maxHeight: "260px",
+                                                  maxHeight: showButtons
+                                                      ? "260px"
+                                                      : "320px",
                                                   overflowY: "auto",
                                                   marginLeft: "-10px",
                                                   textAlign: "center",
