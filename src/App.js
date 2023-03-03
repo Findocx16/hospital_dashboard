@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Card, Col, Row, Container, Table } from "react-bootstrap";
 import Swal from "sweetalert2";
+import soundFile from "./sound.mp3";
 
 function App() {
     const [nowServing, setNowServing] = useState(0);
@@ -98,11 +99,20 @@ function App() {
         let timerInterval;
         const nextPatientNumber = waiting + 1;
 
-        const message = `Next patient number ${nextPatientNumber}`;
-        const speech = new SpeechSynthesisUtterance(message);
-        speech.lang = "en-US";
+        const audio = new Audio(soundFile);
 
-        speechSynthesis.speak(speech);
+        audio.addEventListener("error", () => {
+            console.error("Error loading audio file");
+        });
+
+        audio.addEventListener("ended", () => {
+            const message = `Next patient number ${nextPatientNumber}`;
+            const speech = new SpeechSynthesisUtterance(message);
+            speech.lang = "en-US";
+            speechSynthesis.speak(speech);
+        });
+
+        audio.play();
 
         if (nextPatientNumber - nowServing !== 1) {
             setLastCalledArray((prevArray) => [
@@ -113,7 +123,11 @@ function App() {
 
         Swal.fire({
             title: "<span style='font-size: 170px;'>NEXT</span>",
-            html: `<span style='font-size: 150px; color: #f58d42;'>#00${nextPatientNumber}</span>`,
+            html: `<span style='font-size: 150px; color: #f58d42;'>${
+                nextPatientNumber < 10
+                    ? "#0" + nextPatientNumber
+                    : "#" + nextPatientNumber
+            }</span>`,
             timer: 4000,
             didOpen: () => {
                 Swal.showLoading();
@@ -140,16 +154,27 @@ function App() {
     const handleCallAgain = () => {
         setTimeStorage1();
 
-        const message = `Last call for patient number ${waiting}`;
-        const speech = new SpeechSynthesisUtterance(message);
-        speech.lang = "en-US";
+        const audio = new Audio(soundFile);
 
-        speechSynthesis.speak(speech);
+        audio.addEventListener("error", () => {
+            console.error("Error loading audio file");
+        });
+
+        audio.addEventListener("ended", () => {
+            const message = `Last call for patient number ${waiting}`;
+            const speech = new SpeechSynthesisUtterance(message);
+            speech.lang = "en-US";
+            speechSynthesis.speak(speech);
+        });
+
+        audio.play();
 
         let timerInterval;
         Swal.fire({
             title: "<span style='font-size: 160px;'>LAST CALL</span>",
-            html: `<span style='font-size: 150px; color: #f58d42;'>#00${waiting}</span>`,
+            html: `<span style='font-size: 150px; color: #f58d42;'>${
+                waiting < 10 ? "#0" + waiting : "#" + waiting
+            }</span>`,
             timer: 10000,
             didOpen: () => {
                 Swal.showLoading();
