@@ -11,6 +11,7 @@ function App() {
     const [waitingListOne, setWatingListOne] = useState(2);
     const [waitingListTwo, setWatingListTwo] = useState(3);
     const [waitingListThree, setWatingListThree] = useState(4);
+    const [call, setCall] = useState(true);
 
     const [lastCalledArray, setLastCalledArray] = useState([
         {
@@ -47,6 +48,7 @@ function App() {
         : { width: "33.5vw", height: "41.5vh", marginBottom: "10px" };
 
     const handleFinish = () => {
+        setCall(true);
         setTimeStorage1();
         setWatingListOne(waitingListOne + 1);
         setWatingListTwo(waitingListTwo + 1);
@@ -92,6 +94,7 @@ function App() {
     };
 
     const handleNext = () => {
+        setCall(true);
         setTimeStorage1();
         setWatingListOne(waitingListOne + 1);
         setWatingListTwo(waitingListTwo + 1);
@@ -148,6 +151,7 @@ function App() {
     //     setNowServing(waiting);
     // };
     const handlePrev = () => {
+        setCall(true);
         setWaiting(waiting - 1);
     };
 
@@ -172,6 +176,49 @@ function App() {
         let timerInterval;
         Swal.fire({
             title: "<span style='font-size: 160px;'>LAST CALL</span>",
+            html: `<span style='font-size: 150px; color: #f58d42;'>${
+                waiting < 10 ? "#0" + waiting : "#" + waiting
+            }</span>`,
+            timer: 10000,
+            didOpen: () => {
+                Swal.showLoading();
+                const b = Swal.getHtmlContainer().querySelector("b");
+                timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft();
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            },
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+            }
+        });
+    };
+
+    const handleCall = () => {
+        setCall(false);
+        setTimeStorage1();
+        const audio = new Audio(soundFile);
+
+        audio.addEventListener("error", () => {
+            console.error("Error loading audio file");
+        });
+
+        audio.addEventListener("ended", () => {
+            const message = `Calling for patient number ${waiting}`;
+            const speech = new SpeechSynthesisUtterance(message);
+            speech.lang = "en-US";
+            speechSynthesis.speak(speech);
+        });
+
+        audio.play();
+
+        let timerInterval;
+        Swal.fire({
+            title: "<span style='font-size: 100px;'>CALLING</span>",
             html: `<span style='font-size: 150px; color: #f58d42;'>${
                 waiting < 10 ? "#0" + waiting : "#" + waiting
             }</span>`,
@@ -474,14 +521,25 @@ function App() {
                         >
                             Next
                         </Button>
-                        <Button
-                            variant='warning'
-                            size='lg'
-                            style={{ flex: 1 }}
-                            onClick={handleCallAgain}
-                        >
-                            Call Again
-                        </Button>
+                        {call ? (
+                            <Button
+                                variant='warning'
+                                size='lg'
+                                style={{ flex: 1 }}
+                                onClick={handleCall}
+                            >
+                                Call
+                            </Button>
+                        ) : (
+                            <Button
+                                variant='warning'
+                                size='lg'
+                                style={{ flex: 1 }}
+                                onClick={handleCallAgain}
+                            >
+                                Call Again
+                            </Button>
+                        )}
                     </div>
                 ) : (
                     ""
