@@ -545,6 +545,10 @@ function App() {
                     ""
                 )}
             </Container>
+            <footer className='bg-secondary text-light text-center'>
+                &copy; All rights reserved <span> - </span> Proudly engineered by SDC,
+                SEC, CML, and CJT
+            </footer>
         </>
     );
 }
